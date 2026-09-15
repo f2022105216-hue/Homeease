@@ -1,0 +1,90 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+@import "tailwindcss";
+
+:root {
+	--ink: #17212b;
+	--muted: #66727e;
+	--line: #dce4e8;
+	--canvas: #f5f7f6;
+	--brand: #087f8c;
+	--brand-dark: #06616b;
+	--brand-soft: #e2f3f1;
+	font-family: 'DM Sans', sans-serif;
+	color: var(--ink);
+	background: var(--canvas);
+	font-synthesis: none;
+	text-rendering: optimizeLegibility;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	min-width: 320px;
+	margin: 0;
+	background:
+		radial-gradient(circle at 90% 0%, rgba(226, 243, 241, 0.8), transparent 28rem),
+		var(--canvas);
+}
+
+button,
+input,
+select,
+textarea {
+	font: inherit;
+}
+
+button,
+a {
+	-webkit-tap-highlight-color: transparent;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+	outline: 3px solid rgba(8, 127, 140, 0.28);
+	outline-offset: 3px;
+}
+
+::selection {
+	color: white;
+	background: var(--brand);
+}
+
+h1,
+h2,
+h3,
+h4,
+.font-black,
+.font-bold {
+	font-family: 'Space Grotesk', sans-serif;
+}
+
+.page-heading {
+	max-width: 46rem;
+	margin-inline: auto;
+	text-align: center;
+}
+
+.page-heading .eyebrow {
+	display: block;
+	color: var(--brand);
+	font-size: 0.75rem;
+	font-weight: 700;
+	letter-spacing: 0.12em;
+	line-height: 1.25;
+	text-transform: uppercase;
+}
+
+.page-heading h1 {
+	margin-top: 0.5rem;
+	font-size: clamp(2.25rem, 4vw, 3.5rem);
+	line-height: 1.08;
+}
+
+.page-heading > p:last-child {
+	margin-top: 0.75rem;
+}
