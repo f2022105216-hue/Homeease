@@ -25,10 +25,31 @@ const stats = [
   { value: '24/7', label: 'Support' },
 ]
 
+const reveal = {
+  hidden: { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0 },
+}
+
+const revealGroup = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.08,
+    },
+  },
+}
+
 export default function HomePage() {
   const navigate = useNavigate()
   const [query, setQuery] = useState('')
-  const [showSplash, setShowSplash] = useState(true)
+  const [showSplash, setShowSplash] = useState(() => {
+    const hasSeenSplash = sessionStorage.getItem('homeease-splash-seen') === 'true'
+    if (!hasSeenSplash) {
+      sessionStorage.setItem('homeease-splash-seen', 'true')
+    }
+    return !hasSeenSplash
+  })
 
   useEffect(() => {
     const timer = setTimeout(() => setShowSplash(false), 1200)
@@ -107,28 +128,37 @@ export default function HomePage() {
             </div>
 
             <div className="flex flex-col gap-4 sm:flex-row">
-              <Link
+              <motion.div whileHover={{ y: -3 }} whileTap={{ scale: 0.98 }}>
+                <Link
                 to="/services"
                 className="rounded-full bg-[#087f8c] px-6 py-3.5 text-center text-sm font-semibold text-white shadow-lg shadow-[#b8dedb] transition hover:bg-[#06616b]"
-              >
-                Explore Services
-              </Link>
-              <Link
+                >
+                  Explore Services
+                </Link>
+              </motion.div>
+              <motion.div whileHover={{ y: -3 }} whileTap={{ scale: 0.98 }}>
+                <Link
                 to="/my-bookings"
                 className="rounded-full border border-slate-200 bg-white px-6 py-3.5 text-center text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50"
-              >
-                View Bookings
-              </Link>
+                >
+                  View Bookings
+                </Link>
+              </motion.div>
             </div>
 
-            <div className="grid gap-5 pt-4 sm:grid-cols-3">
+            <motion.div
+              variants={revealGroup}
+              initial="hidden"
+              animate="visible"
+              className="grid gap-5 pt-4 sm:grid-cols-3"
+            >
               {stats.map((item) => (
-                <div key={item.label} className="rounded-2xl border border-slate-200 bg-white/80 p-4 shadow-sm">
+                <motion.div key={item.label} variants={reveal} className="rounded-2xl border border-slate-200 bg-white/80 p-4 shadow-sm">
                   <p className="text-2xl font-black text-slate-900">{item.value}</p>
                   <p className="mt-1 text-sm text-slate-600">{item.label}</p>
-                </div>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           </motion.div>
 
           <motion.div
@@ -152,7 +182,14 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+      <motion.section
+        variants={reveal}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+        className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8"
+      >
         <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p className="text-sm font-semibold uppercase tracking-[0.12em] text-[#087f8c]">Search</p>
@@ -178,17 +215,26 @@ export default function HomePage() {
               <option>Cleaning</option>
               <option>Maintenance</option>
             </select>
-            <button
+            <motion.button
               onClick={handleSearch}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
               className="rounded-2xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
             >
               Search
-            </button>
+            </motion.button>
           </div>
         </div>
-      </section>
+      </motion.section>
 
-      <section className="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8">
+      <motion.section
+        variants={reveal}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.12 }}
+        transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+        className="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8"
+      >
         <div className="mb-8 flex items-end justify-between">
           <div>
             <p className="text-sm font-semibold uppercase tracking-[0.12em] text-[#087f8c]">Popular</p>
@@ -201,9 +247,16 @@ export default function HomePage() {
             <ServiceCard key={service.id} service={service} />
           ))}
         </div>
-      </section>
+      </motion.section>
 
-      <section className="bg-slate-900 py-16 text-white">
+      <motion.section
+        variants={reveal}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.15 }}
+        transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+        className="bg-slate-900 py-16 text-white"
+      >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mb-10 text-center">
             <p className="text-sm font-semibold uppercase tracking-[0.12em] text-[#87c9c5]">Why choose us</p>
@@ -216,19 +269,31 @@ export default function HomePage() {
               ['Transparent pricing', 'Clear, upfront rates with no hidden costs.'],
               ['Easy scheduling', 'Flexible booking slots designed around your routine.'],
             ].map(([title, text]) => (
-              <div key={title} className="rounded-3xl border border-slate-700 bg-slate-800 p-6">
+              <motion.div
+                key={title}
+                whileHover={{ y: -6, borderColor: 'rgba(135, 201, 197, 0.55)' }}
+                transition={{ duration: 0.25 }}
+                className="rounded-3xl border border-slate-700 bg-slate-800 p-6"
+              >
                 <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#087f8c]/20 text-xl text-[#87c9c5]">
                   ✓
                 </div>
                 <h3 className="mb-3 text-xl font-bold">{title}</h3>
                 <p className="text-sm leading-6 text-slate-300">{text}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
-      </section>
+      </motion.section>
 
-      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+      <motion.section
+        variants={reveal}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.15 }}
+        transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+        className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8"
+      >
         <div className="mb-10 text-center">
             <p className="text-sm font-semibold uppercase tracking-[0.12em] text-[#087f8c]">Reviews</p>
           <h2 className="mt-2 text-3xl font-black text-slate-900">What our customers say</h2>
@@ -236,31 +301,45 @@ export default function HomePage() {
 
         <div className="grid gap-6 md:grid-cols-3">
           {reviews.map((review) => (
-            <div key={review.name} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+            <motion.div
+              key={review.name}
+              whileHover={{ y: -5 }}
+              transition={{ duration: 0.25 }}
+              className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm"
+            >
               <div className="mb-4 text-[#087f8c]">★★★★★</div>
               <p className="text-base leading-7 text-slate-600">“{review.quote}”</p>
               <div className="mt-6 border-t border-slate-200 pt-4">
                 <p className="font-semibold text-slate-900">{review.name}</p>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
-      </section>
+      </motion.section>
 
-      <section className="mx-auto max-w-7xl px-4 pb-20 sm:px-6 lg:px-8">
+      <motion.section
+        variants={reveal}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+        className="mx-auto max-w-7xl px-4 pb-20 sm:px-6 lg:px-8"
+      >
         <div className="rounded-[2rem] bg-gradient-to-r from-[#06616b] to-[#087f8c] px-6 py-12 text-center text-white shadow-xl shadow-[#b8dedb]">
           <h2 className="text-3xl font-black sm:text-4xl">Ready to refresh your home?</h2>
           <p className="mx-auto mt-4 max-w-2xl text-base text-[#d9eeec]">
             Book trusted professionals for repairs, cleaning, and maintenance with simple scheduling and upfront pricing.
           </p>
-          <Link
+          <motion.div whileHover={{ y: -3 }} whileTap={{ scale: 0.98 }} className="mt-8 inline-flex">
+            <Link
             to="/services"
-            className="mt-8 inline-flex rounded-full bg-white px-6 py-3 text-sm font-semibold text-[#06616b] transition hover:bg-[#f1fbfa]"
-          >
-            Book a Service
-          </Link>
+              className="rounded-full bg-white px-6 py-3 text-sm font-semibold text-[#06616b] transition hover:bg-[#f1fbfa]"
+            >
+              Book a Service
+            </Link>
+          </motion.div>
         </div>
-      </section>
+      </motion.section>
     </div>
   )
 }

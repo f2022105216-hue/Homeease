@@ -8,15 +8,19 @@ export default function ServiceCard({ service }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
       whileHover={{ y: -8 }}
-      transition={{ duration: 0.25 }}
-      className="overflow-hidden rounded-2xl border border-slate-200/90 bg-white shadow-[0_12px_35px_rgba(23,33,43,0.06)]"
+      whileTap={{ scale: 0.985 }}
+      transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+      className="group overflow-hidden rounded-2xl border border-slate-200/90 bg-white shadow-[0_12px_35px_rgba(23,33,43,0.06)]"
     >
       <div className="relative h-52 overflow-hidden">
-        <img
+        <motion.img
           src={service.image}
           alt={service.name}
-          className="h-full w-full object-cover transition duration-500 hover:scale-105"
+          whileHover={{ scale: 1.07 }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
+          className="h-full w-full object-cover"
         />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-900/25 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
         <span className="absolute left-4 top-4 rounded-lg bg-white/95 px-3 py-1 text-xs font-semibold text-slate-700 shadow-sm">
           {service.category}
         </span>

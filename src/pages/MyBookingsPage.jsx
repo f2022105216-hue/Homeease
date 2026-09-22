@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { getStoredBookings } from '../data/bookings'
 
 export default function MyBookingsPage() {
@@ -10,10 +11,18 @@ export default function MyBookingsPage() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
-      <div className="page-heading mb-10">
-        <p className="eyebrow">My bookings</p>
-        <h1 className="font-black text-slate-900">Your upcoming appointments</h1>
-        <p className="text-base text-slate-600">A clear view of your upcoming home care appointments.</p>
+      <div className="page-heading mb-10 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <p className="eyebrow">My bookings</p>
+          <h1 className="font-black text-slate-900">Your upcoming appointments</h1>
+          <p className="text-base text-slate-600">A clear view of your upcoming home care appointments.</p>
+        </div>
+        <Link
+          to="/"
+          className="inline-flex w-fit items-center rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-[#87c9c5] hover:text-[#087f8c]"
+        >
+          Back to Home
+        </Link>
       </div>
 
       {bookings.length === 0 ? (

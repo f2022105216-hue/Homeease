@@ -1,4 +1,5 @@
-import { NavLink, Outlet } from 'react-router-dom'
+import { motion } from 'framer-motion'
+import { NavLink, Outlet, useLocation } from 'react-router-dom'
 
 const navItems = [
   { label: 'Home', to: '/' },
@@ -7,6 +8,8 @@ const navItems = [
 ]
 
 export default function Layout() {
+  const location = useLocation()
+
   return (
     <div className="min-h-screen bg-transparent text-slate-800">
       <header className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/90 backdrop-blur-xl">
@@ -72,8 +75,15 @@ export default function Layout() {
         </nav>
       </header>
 
-      <main>
-        <Outlet />
+      <main className="overflow-hidden">
+        <motion.div
+          key={location.pathname}
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <Outlet />
+        </motion.div>
       </main>
 
       <footer className="mt-20 border-t border-slate-200 bg-white">
